@@ -46,20 +46,26 @@ function returnTempMsg(tempC) {
         5505: 'Most probably you can\'t recieve this message'
     };
 
+    
     function upToTempMsg(temp, array) {
+        console.log('Input temperature: '+ temp);
         let tempSteps = Object.keys(array);
         let i = 0;
         let amountOfTempSteps = tempSteps.length;
+        console.log('amount of elements in keys array: '+amountOfTempSteps+'\n');
         while (i < amountOfTempSteps) {
-            if (temp <= tempSteps[i] && temp > tempSteps[i - 1]) {
-                let key = arrayKeys[i];
+            if (temp > ((tempSteps[i - 1] || -Infinity)) && temp <= tempSteps[i]) {
+                console.log('Condition: '+(temp > tempSteps[i - 1] || temp > -Infinity)+'\n');
+
+                let key = tempSteps[i];
+                console.log('Key is: '+key+'\n');
+                console.log('array element is: ' + array[key]+'\n');
                 return array[key];
             }
             i++;
         }
         return;
     }
-
     return upToTempMsg(tempC, tempMsgList);
 };
 
