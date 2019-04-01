@@ -33,27 +33,34 @@ function trimSpaceReplaceCommaWithDot(input) {
 
 function returnTempMsg(tempC) {
 
-    let msg;
-    if (tempC <= 0) {
-        msg = 'Water freezes, You should wear winter clothing!';
-    } else if (tempC > 0 && tempC < 10) {
-        msg = 'Its cold, wear a hat!';
-    } else if (tempC >= 10 && tempC < 18) {
-        msg = 'You can wear a coat! It is getting warmer!';
-    } else if (tempC >= 18 && tempC <= 28) {
-        msg = 'It is warm';
-    } else if (tempC > 28 && tempC < 100) {
-        msg = 'I\'s getting hot!';
-    } else if (tempC >= 100 && tempC < 525) {
-        msg = 'Water is boiling or evaporates.';
-    } else if (tempC >= 525 && tempC < 5505) {
-        msg = 'Fire!';
-    } else if (tempC >= 5505) {
-        msg = 'Most probably you can\'t recieve this message';
-    } else(
-        msg = 'No message.'
-    )
-    return msg;
+    const tempMsgList = {
+        0: 'Water freezes, You should wear winter clothing!',
+        12: 'Its cold, wear a hat!',
+        17: 'You can wear a coat! It is getting warmer!',
+        25: 'It is warm',
+        60: 'I\'s getting hot!',
+        99: 'Life threatning temperature',
+        400: 'Water is boiling or evaporates.',
+        524: 'Fire could occurre',
+        1000: 'Fire!',
+        5505: 'Most probably you can\'t recieve this message'
+    };
+
+    function upToTempMsg(temp, array) {
+        let tempSteps = Object.keys(array);
+        let i = 0;
+        let amountOfTempSteps = tempSteps.length;
+        while (i < amountOfTempSteps) {
+            if (temp <= tempSteps[i] && temp > tempSteps[i - 1]) {
+                let key = arrayKeys[i];
+                return array[key];
+            }
+            i++;
+        }
+        return;
+    }
+
+    return upToTempMsg(tempC, tempMsgList);
 };
 
 function returnNanIfEmptyOrNaN(input) {
@@ -63,15 +70,15 @@ function returnNanIfEmptyOrNaN(input) {
     return input;
 };
 
-function displayInHtmlElement(domElement,textToDisplay){
-    domElement.innerHTML = domElement.innerHTML + '<br><hr>'+ textToDisplay +'<br><hr>';
+function displayInHtmlElement(domElement, textToDisplay) {
+    domElement.innerHTML = domElement.innerHTML + '<br><hr>' + textToDisplay + '<br><hr>';
 }
 
 buttonTempToF.addEventListener('click', function () {
 
     // (second parameter empty string '' is IE fallback)
     let tempC = window.prompt('Enter Temperature in Celsius degrees', '');
-    
+
     tempC = trimSpaceReplaceCommaWithDot(tempC);
 
     if (tempC === null) {
@@ -79,7 +86,7 @@ buttonTempToF.addEventListener('click', function () {
     }
 
     tempC = returnNanIfEmptyOrNaN(tempC);
-    
+
     if (isNaN(tempC)) {
         alert('Please enter a number');
         return;
@@ -89,7 +96,7 @@ buttonTempToF.addEventListener('click', function () {
     let tempMsg = returnTempMsg(tempC);
     let finalMsg = 'Input in °C: ' + tempC + '<br><span>Output in °F: ' + tempF + '</span><br><br>' + tempMsg;
 
-    displayInHtmlElement(outputTempToF,finalMsg)
+    displayInHtmlElement(outputTempToF, finalMsg)
 });
 
 
@@ -98,9 +105,9 @@ buttonTempToC.addEventListener('click', function () {
 
     // (second parameter empty string '' is IE fallback)
     let tempF = window.prompt('Enter Temperature in Fahrenheit degrees', '');
-    
+
     tempF = trimSpaceReplaceCommaWithDot(tempF);
-    
+
     if (tempF === null) {
         return;
     }
@@ -117,5 +124,5 @@ buttonTempToC.addEventListener('click', function () {
 
     let finalMsg = 'Input in °F: ' + tempF + '<br><span>Output in °C:' + tempC + '</span><br><br>' + tempMsg;
 
-    displayInHtmlElement(outputTempToC,finalMsg);
+    displayInHtmlElement(outputTempToC, finalMsg);
 });
