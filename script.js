@@ -9,6 +9,19 @@ outputTempToC.innerHTML = 'Click the button! to convert °F to °C!' + '<br><br>
 let buttonTempToF = document.getElementById('temp-to-f-button');
 let buttonTempToC = document.getElementById('temp-to-c-button');
 
+const tempMsgList = {
+    0: 'Water freezes, You should wear winter clothing!',
+    12: 'Its cold, wear a hat!',
+    17: 'You can wear a coat! It is getting warmer!',
+    25: 'It is warm',
+    60: 'I\'s getting hot!',
+    99: 'Life threatning temperature',
+    400: 'Water is boiling or evaporates.',
+    524: 'Fire could occurre',
+    1000: 'Fire!',
+    5505: 'Most probably you can\'t recieve this message'
+};
+
 // If second param decimal not set default is 2 
 function round(num, decimal = 2) {
     let multiplier = Math.pow(10, decimal);
@@ -33,51 +46,26 @@ function trimSpaceReplaceCommaWithDot(input) {
 
 function returnTempMsg(tempC) {
 
-    const tempMsgList = {
-        0: 'Water freezes, You should wear winter clothing!',
-        12: 'Its cold, wear a hat!',
-        17: 'You can wear a coat! It is getting warmer!',
-        25: 'It is warm',
-        60: 'I\'s getting hot!',
-        99: 'Life threatning temperature',
-        400: 'Water is boiling or evaporates.',
-        524: 'Fire could occurre',
-        1000: 'Fire!',
-        5505: 'Most probably you can\'t recieve this message'
-    };
-
+    tempC = Number(tempC);
     
     function upToTempMsg(temp, array) {
-        console.log('Input temperature: '+ temp);
         let tempSteps = Object.keys(array);
         let i = 0;
         let amountOfTempSteps = tempSteps.length;
-        console.log('amount of elements in keys array: '+amountOfTempSteps+'\n');
         while (i < amountOfTempSteps) {
-            if (temp > ((tempSteps[i - 1] || -Infinity)) && temp <= tempSteps[i]) {
-                console.log('Condition: '+(temp > tempSteps[i - 1] || temp > -Infinity)+'\n');
-
+            if (temp > ((tempSteps[i-1] || -Infinity)) && temp <= (tempSteps[i])) {
                 let key = tempSteps[i];
-                console.log('Key is: '+key+'\n');
-                console.log('array element is: ' + array[key]+'\n');
                 return array[key];
             }
             i++;
         }
-        return;
+        return 'Absurd temperature!';
     }
     return upToTempMsg(tempC, tempMsgList);
 };
 
-function returnNanIfEmptyOrNaN(input) {
-    if (isNaN(input) || input === '') {
-        return NaN;
-    }
-    return input;
-};
-
-function displayInHtmlElement(domElement, textToDisplay) {
-    domElement.innerHTML = domElement.innerHTML + '<br><hr>' + textToDisplay + '<br><hr>';
+function displayInHtmlElement(domElement,textToDisplay){
+    domElement.innerHTML = domElement.innerHTML + '<br><hr>'+ textToDisplay +'<br><hr>';
 }
 
 buttonTempToF.addEventListener('click', function () {
@@ -85,42 +73,37 @@ buttonTempToF.addEventListener('click', function () {
     // (second parameter empty string '' is IE fallback)
     let tempC = window.prompt('Enter Temperature in Celsius degrees', '');
 
-    tempC = trimSpaceReplaceCommaWithDot(tempC);
-
     if (tempC === null) {
         return;
     }
 
-    tempC = returnNanIfEmptyOrNaN(tempC);
+    tempC = trimSpaceReplaceCommaWithDot(tempC);
 
-    if (isNaN(tempC)) {
+    if (isNaN(tempC) || tempC === '') {
         alert('Please enter a number');
         return;
     }
 
     let tempF = celsiusToFahrenheit(tempC);
     let tempMsg = returnTempMsg(tempC);
+
     let finalMsg = 'Input in °C: ' + tempC + '<br><span>Output in °F: ' + tempF + '</span><br><br>' + tempMsg;
 
-    displayInHtmlElement(outputTempToF, finalMsg)
+    displayInHtmlElement(outputTempToF,finalMsg)
 });
-
-
 
 buttonTempToC.addEventListener('click', function () {
 
     // (second parameter empty string '' is IE fallback)
     let tempF = window.prompt('Enter Temperature in Fahrenheit degrees', '');
-
-    tempF = trimSpaceReplaceCommaWithDot(tempF);
-
+    
     if (tempF === null) {
         return;
     }
 
-    tempF = returnNanIfEmptyOrNaN(tempF);
+    tempF = trimSpaceReplaceCommaWithDot(tempF);
 
-    if (isNaN(tempF)) {
+    if (isNaN(tempF) || tempF === '') {
         alert('Please enter a number');
         return;
     }
@@ -130,5 +113,5 @@ buttonTempToC.addEventListener('click', function () {
 
     let finalMsg = 'Input in °F: ' + tempF + '<br><span>Output in °C:' + tempC + '</span><br><br>' + tempMsg;
 
-    displayInHtmlElement(outputTempToC, finalMsg);
+    displayInHtmlElement(outputTempToC,finalMsg);
 });
