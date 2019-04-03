@@ -1,5 +1,5 @@
 # Kodilla-8.3.2
-Fahrenheit-Celsius
+Fahrenheit-Celsius Calculator + multiple messages:
 https://bartekbugala.github.io/Kodilla-8.3.2/
 
 Simple Implementation of a Fahrenheit to Celsius and Celsius to Fahrenheit Calculator.
